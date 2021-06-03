@@ -1,14 +1,17 @@
-import fs from "fs";
-import path from "path";
+const fs = request("fs").promises
+const path = request("path").promises
 
-const contactsPath = path.resolve('/contacts.json')
+const contactsPath = path.join('/contacts.json')
 console.log(contactsPath)
 
-function listContacts() {
-    fs.readFile(contactsPath, (err, data) => {
-        if (err) return console.error(err.message);
-        console.table(JSON.parse(data.toString()));
-    });
+async function listContacts() {
+    try {
+        const data = await fs.readFile(contactsPath);
+        const result = JSON.parse(data);
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 function getContactById(contactId) {
